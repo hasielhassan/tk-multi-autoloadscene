@@ -1,0 +1,79 @@
+# Copyright (c) 2013 Shotgun Software Inc.
+# 
+# CONFIDENTIAL AND PROPRIETARY
+# 
+# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit 
+# Source Code License included in this distribution package. See LICENSE.
+# By accessing, using, copying or modifying this work you indicate your 
+# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
+# not expressly granted therein are reserved by Shotgun Software Inc.
+
+# Metadata defining the behaviour and requirements for this app
+
+# expected fields in the configuration file for this app
+configuration:
+
+    display_name:
+        type: str
+        default_value: "Auto Load Scene ..."
+        description: "Name of the engine button"
+
+    load_hook:
+        type: hook
+        parameters: [path, sg_publish_data]
+        default_value: '{self}/{engine_name}_load_hook.py'
+        description: Hook that performs the scene loading
+
+    pre_load_hook:
+        type: hook
+        parameters: [sg_publish_data]
+        default_value: '{self}/{engine_name}_pre_load_hook.py'
+        description: Hook that runs before the scene loading
+
+    post_load_hook:
+        type: hook
+        parameters: [sg_publish_data]
+        default_value: '{self}/{engine_name}_post_load_hook.py'
+        description: Hook that runs after the scene loading
+
+    available_steps:
+        type: list
+        default_value: []
+        description: Parameter to specify to what pipeline steps this app will be available
+        values:
+            type: str
+
+    sg_filters:
+        type: list
+        description: "Allows you to filter the publishes to get the one to load. 
+                      Uses shotgun API query syntax. For example...
+                      [['sg_status_list', 'is', 'ip']]"
+        default_value: [['sg_status_list', 'is', 'apr']]
+        values:
+            type: shotgun_filter
+
+    sg_order:
+        type: list
+        description: "Allows you to specify the order of the quaery to select only one publish. 
+                      Uses shotgun API query syntax. For example...
+                      [{'field_name':'created_at','direction':'asc'}, {'field_name':'id','direction':'desc'}]"
+        default_value: []
+        values:
+            type: dict
+        allows_empty: True
+
+
+# the Shotgun fields that this app needs in order to operate correctly
+requires_shotgun_fields:
+
+# More verbose description of this item 
+display_name: "Auto Load Scene ..."
+description: "Loads an individual scene based on context and filters."
+
+# Required minimum versions for this item to run
+requires_shotgun_version:
+requires_core_version: "v0.12.5"
+requires_engine_version:
+
+# the engines that this app can operate in:
+supported_engines: [tk-3dsmaxplus]
